@@ -1,0 +1,71 @@
+mql5
+//+------------------------------------------------------------------+
+//|                                                Eve EA            |
+//|                                   Developer: Forex Robot Easy Team|
+//|                                   Site: forexroboteasy.com       |
+//+------------------------------------------------------------------+
+
+// Define the currency pairs to be traded
+string[] currencyPairs = {'EURNZD', 'AUDNZD', 'EURAUD', 'GBPCAD', 'NZDCAD', 'EURGBP'};
+
+// Define the trading session start and end times
+datetime sessionStartTime = D'19:00';
+datetime sessionEndTime = D'24:00';
+
+// Define the rollover period start and end times
+datetime rolloverStartTime = D'00:00';
+datetime rolloverEndTime = D'01:00';
+
+// Define the stop-loss and take-profit levels
+double stopLoss = 50.0;
+double takeProfit = 100.0;
+
+//+------------------------------------------------------------------+
+//| Expert initialization function                                   |
+//+------------------------------------------------------------------+
+int OnInit()
+{
+   // Add any necessary initialization code here
+   
+   return(INIT_SUCCEEDED);
+}
+
+//+------------------------------------------------------------------+
+//| Expert deinitialization function                                 |
+//+------------------------------------------------------------------+
+void OnDeinit(const int reason)
+{
+   // Add any necessary deinitialization code here
+}
+
+//+------------------------------------------------------------------+
+//| Expert start function                                            |
+//+------------------------------------------------------------------+
+void OnTick()
+{
+   // Check if the current time is within the trading session
+   if (TimeCurrent() >= sessionStartTime && TimeCurrent() <= sessionEndTime)
+   {
+      // Check if the current time is not within the rollover period
+      if (!(TimeCurrent() >= rolloverStartTime && TimeCurrent() <= rolloverEndTime))
+      {
+         // Loop through each currency pair
+         for (int i = 0; i < ArraySize(currencyPairs); i++)
+         {
+            // Place a market order to enter the market
+            OrderSend(currencyPairs[i], OP_BUY, 0.01, Ask, 0, Bid - stopLoss * Point, Bid + takeProfit * Point, 'Eve EA', 0, 0, Green);
+         }
+      }
+   }
+}
+
+//+------------------------------------------------------------------+
+//| Custom functions                                                  |
+//+------------------------------------------------------------------+
+void OrderSend(string symbol, int cmd, double volume, double price, int slippage, double stoploss, double takeprofit, string comment, int magic, datetime expiration, color arrow_color)
+{
+   // Add any necessary code to execute buy and sell orders
+}
+
+// Add any necessary custom functions for managing multiple currency pairs and adjusting trading parameters
+
